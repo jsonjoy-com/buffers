@@ -2,14 +2,14 @@ import {decodeUtf8} from './utf8/decodeUtf8';
 import type {IReader, IReaderResettable} from './types';
 
 export class Reader implements IReader, IReaderResettable {
-  public uint8 = new Uint8Array([]);
-  public view = new DataView(this.uint8.buffer);
+  public uint8: Uint8Array = new Uint8Array([]);
+  public view: DataView = new DataView(this.uint8.buffer);
   public x = 0;
 
   public reset(uint8: Uint8Array): void {
     this.x = 0;
     this.uint8 = uint8;
-    this.view = new DataView(uint8.buffer, uint8.byteOffset, uint8.length);
+    this.view = new DataView(uint8.buffer as ArrayBuffer, uint8.byteOffset, uint8.length);
   }
 
   /**
