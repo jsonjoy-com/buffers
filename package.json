@@ -82,9 +82,6 @@
     "testEnvironmentOptions": {
       "url": "http://localhost/"
     },
-    "setupFiles": [
-      "<rootDir>/src/__tests__/setup.js"
-    ],
     "moduleFileExtensions": [
       "ts",
       "js"
