@@ -1,6 +1,6 @@
 // yarn build && npx ts-node src/buffers/__bench__/bench.decodeUtf8.ts
 
-import {runBenchmark} from '../../__bench__/runBenchmark';
+import {runBenchmark} from './runBenchmark';
 
 const prepare = (str: string) => {
   const buf = Buffer.from(str);
