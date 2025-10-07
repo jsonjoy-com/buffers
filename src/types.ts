@@ -91,6 +91,8 @@ export interface IReaderBase {
    */
   cut(size?: number): IReaderBase;
 
+  subarray(start?: number, end?: number): Uint8Array;
+
   /** Get current byte value without advancing the cursor. */
   peek(): number;
 
