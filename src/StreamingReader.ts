@@ -87,7 +87,7 @@ export class StreamingReader implements IReader, IReaderResettable {
     this.x += length;
   }
 
-  public buf(size: number): Uint8Array {
+  public buf(size: number = this.size()): Uint8Array {
     this.assertSize(size);
     const end = this.x + size;
     const bin = this.uint8.subarray(this.x, end);

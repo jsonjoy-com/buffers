@@ -106,8 +106,12 @@ export interface IReaderBase {
   /**
    * Create a new Uint8Array view of provided length starting at
    * the current cursor position.
+   * 
+   * If size is not provided, it will return a view of all remaining bytes.
+   *
+   * @param size Length of the returned Uint8Array.
    */
-  buf(size: number): Uint8Array;
+  buf(size?: number): Uint8Array;
 
   u8(): number;
   i8(): number;
