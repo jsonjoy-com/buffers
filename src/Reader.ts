@@ -45,6 +45,13 @@ export class Reader implements IReader, IReaderResettable {
     return bin;
   }
 
+  public subarray(start: number = 0, end?: number): Uint8Array {
+    const x = this.x;
+    const actualStart = x + start;
+    const actualEnd = typeof end === 'number' ? x + end : this.end;
+    return this.uint8.subarray(actualStart, actualEnd);
+  }
+
   /**
    * Creates a new {@link Reader} that references the same underlying memory
    * buffer. But with independent cursor and end.
