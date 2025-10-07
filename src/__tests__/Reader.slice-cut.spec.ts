@@ -125,17 +125,17 @@ describe('Reader.slice() and Reader.cut() methods', () => {
       expect(cut1.x).toBe(0);
       expect(cut1.u8()).toBe(1);
       expect(cut1.u8()).toBe(2);
-      
+
       expect(cut2.x).toBe(2);
       expect(cut2.u8()).toBe(3);
       expect(cut2.u8()).toBe(4);
       expect(cut2.u8()).toBe(5);
-      
+
       expect(cut3.x).toBe(5);
       expect(cut3.u8()).toBe(6);
       expect(cut3.u8()).toBe(7);
       expect(cut3.u8()).toBe(8);
-      
+
       expect(reader.x).toBe(8);
       expect(reader.size()).toBe(0);
     });
@@ -161,24 +161,24 @@ describe('Reader.slice() and Reader.cut() methods', () => {
       const reader = new Reader(new Uint8Array([3, 1, 2, 3, 2, 4, 5]));
       // Simulate a binary format with length-prefixed chunks
       // [length: 3][data: 1,2,3][length: 2][data: 4,5]
-      
+
       const len1 = reader.u8();
       const chunk1 = reader.cut(len1);
-      
+
       const len2 = reader.u8();
       const chunk2 = reader.cut(len2);
-      
+
       expect(chunk1.x).toBe(1);
       expect(chunk1.size()).toBe(3);
       expect(chunk1.u8()).toBe(1);
       expect(chunk1.u8()).toBe(2);
       expect(chunk1.u8()).toBe(3);
-      
+
       expect(chunk2.x).toBe(5);
       expect(chunk2.size()).toBe(2);
       expect(chunk2.u8()).toBe(4);
       expect(chunk2.u8()).toBe(5);
-      
+
       expect(reader.x).toBe(7);
       expect(reader.size()).toBe(0);
     });
@@ -197,12 +197,12 @@ describe('Reader.slice() and Reader.cut() methods', () => {
       const reader = new Reader(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]));
       const slice = reader.slice(2, 6); // [3, 4, 5, 6]
       const cut = slice.cut(2); // [3, 4]
-      
+
       expect(cut.u8()).toBe(3);
       expect(cut.u8()).toBe(4);
       expect(slice.u8()).toBe(5);
       expect(slice.u8()).toBe(6);
-      
+
       // original reader should be unaffected
       expect(reader.x).toBe(0);
     });
@@ -211,10 +211,10 @@ describe('Reader.slice() and Reader.cut() methods', () => {
       const reader = new Reader(new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]));
       const cut = reader.cut(4);
       const slice = cut.slice(1, 3);
-      
+
       expect(slice.u8()).toBe(2);
       expect(slice.u8()).toBe(3);
-      
+
       expect(reader.x).toBe(4);
       expect(reader.u8()).toBe(5);
     });
@@ -225,13 +225,13 @@ describe('Reader.slice() and Reader.cut() methods', () => {
       const inner1 = outer.cut(2);
       const inner2 = outer.cut(2);
       const inner3 = outer.cut(2);
-      
+
       expect(inner1.u8()).toBe(1);
       expect(inner1.u8()).toBe(2);
-      
+
       expect(inner2.u8()).toBe(3);
       expect(inner2.u8()).toBe(4);
-      
+
       expect(inner3.u8()).toBe(5);
       expect(inner3.u8()).toBe(6);
     });
@@ -257,11 +257,11 @@ describe('Reader.slice() and Reader.cut() methods', () => {
       const buffer = new Uint8Array(8);
       const view = new DataView(buffer.buffer);
       view.setUint32(0, 0x12345678);
-      view.setUint32(4, 0x9ABCDEF0);
+      view.setUint32(4, 0x9abcdef0);
       const reader = new Reader(buffer);
       const slice = reader.slice(0, 8);
       expect(slice.u32()).toBe(0x12345678);
-      expect(slice.u32()).toBe(0x9ABCDEF0);
+      expect(slice.u32()).toBe(0x9abcdef0);
     });
   });
 

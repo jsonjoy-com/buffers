@@ -106,7 +106,7 @@ export class StreamingReader implements IReader, IReaderResettable {
   public slice(start: number = 0, end?: number): Reader {
     const x = this.x;
     const actualStart = x + start;
-    const actualEnd = typeof end === 'number' ? (x + end) : (this.size() + x - start);
+    const actualEnd = typeof end === 'number' ? x + end : this.size() + x - start;
     return new Reader(this.uint8, this.view, actualStart, actualEnd);
   }
 

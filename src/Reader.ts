@@ -48,7 +48,7 @@ export class Reader implements IReader, IReaderResettable {
   /**
    * Creates a new {@link Reader} that references the same underlying memory
    * buffer. But with independent cursor and end.
-   * 
+   *
    * Preferred over {@link buf} since it also provides a DataView and is much
    * faster to allocate a new {@link Slice} than a new {@link Uint8Array}.
    *
@@ -59,7 +59,7 @@ export class Reader implements IReader, IReaderResettable {
   public slice(start: number = 0, end?: number): Reader {
     const x = this.x;
     const actualStart = x + start;
-    const actualEnd = typeof end === 'number' ? (x + end) : this.end;
+    const actualEnd = typeof end === 'number' ? x + end : this.end;
     return new Reader(this.uint8, this.view, actualStart, actualEnd);
   }
 
