@@ -12,7 +12,7 @@ const from = hasBuffer ? Buffer.from : null;
 const textEncoder = typeof TextEncoder !== 'undefined' ? new TextEncoder() : null;
 
 /**
- * Encoder class provides an efficient way to encode binary data. It grows the
+ * Writer class provides an efficient way to encode binary data. It grows the
  * internal memory buffer automatically as more space is required. It is useful
  * in cases when it is not known in advance the size of memory needed.
  */

@@ -1,5 +1,11 @@
 const fromCharCode = String.fromCharCode;
 
+/**
+ * A streaming reader which internally manages multiple chunks of
+ * Uint8Array instances. For performance it does not merge the chunks into
+ * a single Uint8Array instance. Instead it keeps track of the chunks and
+ * reads across chunk boundaries as needed.
+ */
 export class StreamingOctetReader {
   protected readonly chunks: Uint8Array[] = [];
 

@@ -2,14 +2,21 @@ import {decodeUtf8} from './utf8/decodeUtf8';
 import type {IReader, IReaderResettable} from './types';
 
 export class Reader implements IReader, IReaderResettable {
-  public uint8: Uint8Array = new Uint8Array([]);
-  public view: DataView = new DataView(this.uint8.buffer);
-  public x = 0;
+  constructor(
+    public uint8: Uint8Array = new Uint8Array([]),
+    public view: DataView = new DataView(uint8.buffer as ArrayBuffer, uint8.byteOffset, uint8.length),
+    public x: number = 0,
+    public end: number = uint8.length,
+  ) {}
 
   public reset(uint8: Uint8Array): void {
     this.x = 0;
     this.uint8 = uint8;
     this.view = new DataView(uint8.buffer as ArrayBuffer, uint8.byteOffset, uint8.length);
+  }
+
+  public size(): number {
+    return this.end - this.x;
   }
 
   /**
@@ -30,11 +37,44 @@ export class Reader implements IReader, IReaderResettable {
     this.x += length;
   }
 
-  public buf(size: number): Uint8Array {
-    const end = this.x + size;
-    const bin = this.uint8.subarray(this.x, end);
+  public buf(size: number = this.size()): Uint8Array {
+    const x = this.x;
+    const end = x + size;
+    const bin = this.uint8.subarray(x, end);
     this.x = end;
     return bin;
+  }
+
+  /**
+   * Creates a new {@link Reader} that references the same underlying memory
+   * buffer. But with independent cursor and end.
+   * 
+   * Preferred over {@link buf} since it also provides a DataView and is much
+   * faster to allocate a new {@link Slice} than a new {@link Uint8Array}.
+   *
+   * @param start Start offset relative to the current cursor position.
+   * @param end End offset relative to the current cursor position.
+   * @returns A new {@link Reader} instance.
+   */
+  public slice(start: number = 0, end?: number): Reader {
+    const x = this.x;
+    const actualStart = x + start;
+    const actualEnd = typeof end === 'number' ? (x + end) : this.end;
+    return new Reader(this.uint8, this.view, actualStart, actualEnd);
+  }
+
+  /**
+   * Similar to {@link slice} but also advances the cursor. Returns a new
+   * {@link Reader} that references the same underlying memory buffer, starting
+   * from the current cursor position.
+   *
+   * @param size Number of bytes to cut from the current position.
+   * @returns A new {@link Reader} instance.
+   */
+  public cut(size: number = this.size()): Reader {
+    const slice = this.slice(0, size);
+    this.skip(size);
+    return slice;
   }
 
   public u8(): number {

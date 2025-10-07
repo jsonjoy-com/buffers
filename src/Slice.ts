@@ -1,3 +1,6 @@
+/**
+ * @deprecated Use {@link Reader} instead.
+ */
 export class Slice {
   constructor(
     public readonly uint8: Uint8Array,
