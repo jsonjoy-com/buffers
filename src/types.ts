@@ -1,3 +1,4 @@
+import {Reader} from './Reader';
 import type {Slice} from './Slice';
 
 export interface IWriter {
@@ -70,6 +71,26 @@ export interface IWriterGrowable {
 }
 
 export interface IReaderBase {
+  /**
+   * Creates a new {@link IReaderBase} that references the same underlying memory
+   * buffer. But with independent cursor and end.
+   *
+   * @param start Start offset relative to the current cursor position.
+   * @param end End offset relative to the current cursor position.
+   * @returns A new {@link IReaderBase} instance.
+   */
+  slice(start?: number, end?: number): IReaderBase;
+
+  /**
+   * Similar to {@link slice} but also advances the cursor. Returns a new
+   * {@link IReaderBase} that references the same underlying memory buffer, starting
+   * from the current cursor position.
+   *
+   * @param size Number of bytes to cut from the current position.
+   * @returns A new {@link IReaderBase} instance.
+   */
+  cut(size?: number): IReaderBase;
+
   /** Get current byte value without advancing the cursor. */
   peek(): number;
 
@@ -85,8 +106,12 @@ export interface IReaderBase {
   /**
    * Create a new Uint8Array view of provided length starting at
    * the current cursor position.
+   *
+   * If size is not provided, it will return a view of all remaining bytes.
+   *
+   * @param size Length of the returned Uint8Array.
    */
-  buf(size: number): Uint8Array;
+  buf(size?: number): Uint8Array;
 
   u8(): number;
   i8(): number;
