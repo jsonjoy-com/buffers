@@ -195,11 +195,11 @@ describe('Writer', () => {
   describe('u16', () => {
     test('writes 16-bit unsigned integer', () => {
       const writer = new Writer();
-      writer.u16(0xABCD);
+      writer.u16(0xabcd);
       expect(writer.x).toBe(2);
       // Check the values written (assuming little-endian or system endianness)
       const value = writer.view.getUint16(0);
-      expect(value).toBe(0xABCD);
+      expect(value).toBe(0xabcd);
     });
   });
 
@@ -233,10 +233,10 @@ describe('Writer', () => {
   describe('u64', () => {
     test('writes 64-bit unsigned integer as number', () => {
       const writer = new Writer();
-      writer.u64(0x1234567890ABCDEF);
+      writer.u64(0x1234567890abcdef);
       expect(writer.x).toBe(8);
       const value = writer.view.getBigUint64(0);
-      expect(value).toBe(BigInt(0x1234567890ABCDEF));
+      expect(value).toBe(BigInt(0x1234567890abcdef));
     });
 
     test('writes 64-bit unsigned integer as bigint', () => {
@@ -267,9 +267,9 @@ describe('Writer', () => {
   describe('u8u16', () => {
     test('writes byte and 16-bit word', () => {
       const writer = new Writer();
-      writer.u8u16(0xFF, 0x1234);
+      writer.u8u16(0xff, 0x1234);
       expect(writer.x).toBe(3);
-      expect(writer.uint8[0]).toBe(0xFF);
+      expect(writer.uint8[0]).toBe(0xff);
       expect(writer.uint8[1]).toBe(0x12);
       expect(writer.uint8[2]).toBe(0x34);
     });
@@ -278,27 +278,27 @@ describe('Writer', () => {
   describe('u8u32', () => {
     test('writes byte and 32-bit dword', () => {
       const writer = new Writer();
-      writer.u8u32(0xAA, 0x12345678);
+      writer.u8u32(0xaa, 0x12345678);
       expect(writer.x).toBe(5);
-      expect(writer.uint8[0]).toBe(0xAA);
+      expect(writer.uint8[0]).toBe(0xaa);
     });
   });
 
   describe('u8u64', () => {
     test('writes byte and 64-bit qword', () => {
       const writer = new Writer();
-      writer.u8u64(0xFF, 0x123456789ABCDEF0);
+      writer.u8u64(0xff, 0x123456789abcdef0);
       expect(writer.x).toBe(9);
-      expect(writer.uint8[0]).toBe(0xFF);
+      expect(writer.uint8[0]).toBe(0xff);
     });
   });
 
   describe('u8f32', () => {
     test('writes byte and 32-bit float', () => {
       const writer = new Writer();
-      writer.u8f32(0xAA, 1.5);
+      writer.u8f32(0xaa, 1.5);
       expect(writer.x).toBe(5);
-      expect(writer.uint8[0]).toBe(0xAA);
+      expect(writer.uint8[0]).toBe(0xaa);
       const value = writer.view.getFloat32(1);
       expect(value).toBeCloseTo(1.5);
     });
@@ -307,9 +307,9 @@ describe('Writer', () => {
   describe('u8f64', () => {
     test('writes byte and 64-bit float', () => {
       const writer = new Writer();
-      writer.u8f64(0xBB, 3.14159);
+      writer.u8f64(0xbb, 3.14159);
       expect(writer.x).toBe(9);
-      expect(writer.uint8[0]).toBe(0xBB);
+      expect(writer.uint8[0]).toBe(0xbb);
       const value = writer.view.getFloat64(1);
       expect(value).toBeCloseTo(3.14159);
     });
@@ -557,14 +557,7 @@ describe('Writer', () => {
 
     test('encodes to same bytes as TextEncoder', () => {
       const writer = new Writer();
-      const testStrings = [
-        'Hello',
-        'café',
-        '你好',
-        '👍',
-        'Привет',
-        'mixed: Hello мир 世界 🌍',
-      ];
+      const testStrings = ['Hello', 'café', '你好', '👍', 'Привет', 'mixed: Hello мир 世界 🌍'];
 
       for (const str of testStrings) {
         writer.newBuffer(str.length * 4 + 1);
@@ -579,12 +572,7 @@ describe('Writer', () => {
 
     test('handles consecutive writes', () => {
       const writer = new Writer();
-      const strings = [
-        'Hello ',
-        'мир ',
-        '世界 ',
-        '👍',
-      ];
+      const strings = ['Hello ', 'мир ', '世界 ', '👍'];
       let totalLength = 0;
       for (const str of strings) {
         const len = writer.utf8(str);
@@ -617,13 +605,7 @@ describe('Writer', () => {
 
     test('stress test: alternating small and large strings', () => {
       const writer = new Writer(10); // Small initial buffer
-      const strings = [
-        'a',
-        '😀'.repeat(1000),
-        'test',
-        '中国'.repeat(500),
-        '!',
-      ];
+      const strings = ['a', '😀'.repeat(1000), 'test', '中国'.repeat(500), '!'];
 
       for (const str of strings) {
         writer.ensureCapacity(str.length * 4);
@@ -647,13 +629,7 @@ describe('Writer', () => {
 
     test('matches TextEncoder output', () => {
       const writer = new Writer();
-      const testStrings = [
-        'simple',
-        'café',
-        '日本語',
-        '😀',
-        'мир',
-      ];
+      const testStrings = ['simple', 'café', '日本語', '😀', 'мир'];
 
       for (const str of testStrings) {
         writer.newBuffer(str.length * 4 + 1);
@@ -671,7 +647,7 @@ describe('Writer', () => {
       writer.u8(42);
       writer.u16(0x1234);
       writer.utf8('test');
-      writer.u32(0xDEADBEEF);
+      writer.u32(0xdeadbeef);
       expect(writer.x).toBeGreaterThan(0);
     });
 

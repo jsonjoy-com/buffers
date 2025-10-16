@@ -114,10 +114,14 @@ const benchmark = {
         return (data: any) => encoder.encode(data);
       },
     },
-    ...(hasBuffer ? [{
-      name: 'Buffer.from()',
-      setup: () => (data: any) => new Uint8Array(Buffer.from(data, 'utf8')),
-    }] : []),
+    ...(hasBuffer
+      ? [
+          {
+            name: 'Buffer.from()',
+            setup: () => (data: any) => new Uint8Array(Buffer.from(data, 'utf8')),
+          },
+        ]
+      : []),
     {
       name: 'Writer.utf8()',
       setup: () => {

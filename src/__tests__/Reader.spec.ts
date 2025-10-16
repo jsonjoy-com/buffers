@@ -805,14 +805,7 @@ describe('Reader', () => {
     });
 
     test('roundtrip with Writer', () => {
-      const testStrings = [
-        'simple',
-        'café',
-        '日本語',
-        '😀',
-        'мир',
-        'Hello мир 世界 🌍',
-      ];
+      const testStrings = ['simple', 'café', '日本語', '😀', 'мир', 'Hello мир 世界 🌍'];
 
       for (const str of testStrings) {
         const writer = new Writer();
@@ -855,7 +848,7 @@ describe('Reader', () => {
 
     test('reads ASCII with special characters', () => {
       const str = 'Hello!@#123';
-      const data = new Uint8Array(str.split('').map(c => c.charCodeAt(0)));
+      const data = new Uint8Array(str.split('').map((c) => c.charCodeAt(0)));
       const reader = new Reader(data);
       const result = reader.ascii(str.length);
       expect(result).toBe(str);
@@ -866,7 +859,7 @@ describe('Reader', () => {
       for (let i = 32; i < 127; i++) {
         str += String.fromCharCode(i);
       }
-      const data = new Uint8Array(str.split('').map(c => c.charCodeAt(0)));
+      const data = new Uint8Array(str.split('').map((c) => c.charCodeAt(0)));
       const reader = new Reader(data);
       const result = reader.ascii(str.length);
       expect(result).toBe(str);
@@ -874,7 +867,7 @@ describe('Reader', () => {
 
     test('stress test: very long ASCII string', () => {
       const longStr = 'a'.repeat(100000);
-      const data = new Uint8Array(longStr.split('').map(c => c.charCodeAt(0)));
+      const data = new Uint8Array(longStr.split('').map((c) => c.charCodeAt(0)));
       const reader = new Reader(data);
       const result = reader.ascii(longStr.length);
       expect(result).toBe(longStr);
@@ -899,7 +892,7 @@ describe('Reader', () => {
       const view = new DataView(buffer);
       view.setUint8(0, 42);
       view.setUint16(1, 0x1234);
-      view.setUint32(3, 0xDEADBEEF);
+      view.setUint32(3, 0xdeadbeef);
       const asciiStr = 'test';
       const uint8 = new Uint8Array(buffer);
       for (let i = 0; i < asciiStr.length; i++) {
@@ -909,7 +902,7 @@ describe('Reader', () => {
       const reader = new Reader(uint8);
       expect(reader.u8()).toBe(42);
       expect(reader.u16()).toBe(0x1234);
-      expect(reader.u32()).toBe(0xDEADBEEF);
+      expect(reader.u32()).toBe(0xdeadbeef);
       expect(reader.ascii(4)).toBe('test');
     });
 
